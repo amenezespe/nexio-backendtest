@@ -17,7 +17,7 @@ public class CommentValidator extends BaseConstraintValidator implements Constra
     public boolean isValid(Comment comment, ConstraintValidatorContext context) {
         setConstraintValidator(context);
 
-        ErrorCode error = validateComment(comment);
+        var error = validateComment(comment);
 
         if ( error != null) {
             setMessage(error.getErrorCode(), error.getMessage());

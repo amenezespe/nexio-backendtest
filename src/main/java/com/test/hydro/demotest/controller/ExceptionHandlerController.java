@@ -36,7 +36,7 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public MessagePayload doErrorException (Exception ex) {
-        MessagePayload messagePayload = new MessagePayload();
+        var messagePayload = new MessagePayload();
 
         messagePayload.setCode(ErrorCode.INTERNAL_ERROR.getErrorCode());
         messagePayload.setMessage(ex.getMessage());

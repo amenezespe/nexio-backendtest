@@ -26,8 +26,8 @@ public class ExceptionHandlerControllerTest {
     @Test
     public void testeErrorException() {
 
-        Exception exception = new Exception("Test Exception");
-        MessagePayload error = controllerException.doErrorException(exception);
+        var exception = new Exception("Test Exception");
+        var error = controllerException.doErrorException(exception);
 
         Assert.assertEquals(error.getCode(), ErrorCode.INTERNAL_ERROR.getErrorCode());
 
@@ -35,16 +35,11 @@ public class ExceptionHandlerControllerTest {
 
     private static final String OBJECT_WITH_VALIDATION_ERROR = "Comment";
 
-//    @Test
-//    public void test() throws Exception {
-//        mockMvc.perform(post("/post/111/comment").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
-//    }
-//
     @Test
     public void testErrorParseException() throws Exception{
 
-        MethodArgumentNotValidException ex = createExceptionWithFieldErrors();
-        MessagePayload error = controllerException.doErrorMethodArgumentNotValidException(ex);
+        var ex = createExceptionWithFieldErrors();
+        var error = controllerException.doErrorMethodArgumentNotValidException(ex);
 
         Assert.assertEquals(error.getCode(), ErrorCode.DESCRIPTION_ERROR.getErrorCode());
 
@@ -53,8 +48,8 @@ public class ExceptionHandlerControllerTest {
     private MethodArgumentNotValidException createExceptionWithFieldErrors() {
         BindingResult bindingResult = new BeanPropertyBindingResult(new Comment(), OBJECT_WITH_VALIDATION_ERROR);
 
-            FieldError fieldError = new FieldError("Comment", "description", "10002:Test");
-            bindingResult.addError(fieldError);
+        var fieldError = new FieldError("Comment", "description", "10002:Test");
+        bindingResult.addError(fieldError);
 
 
         return new MethodArgumentNotValidException(Mockito.mock(MethodParameter.class), bindingResult);

@@ -20,13 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CommentControllerTest {
 
     private String PATH_APP = "/post";
-
 
     private MockMvc mvc;
 
@@ -61,13 +56,12 @@ public class CommentControllerTest {
 
     }
 
-
     @Test
     public void getCommentsTest_ValidList() throws Exception {
-        CommentsList comments = new Gson().fromJson(HelperFile.loadFileJson("commentsList_999.json"), CommentsList.class);
+        var comments = new Gson().fromJson(HelperFile.loadFileJson("commentsList_999.json"), CommentsList.class);
         Mockito.when(commentService.findByIdComment(anyString())).thenReturn(comments.getComments());
 
-        MockHttpServletRequestBuilder requestBuilder = get(PATH_APP+"/999/comments");
+        var requestBuilder = get(PATH_APP+"/999/comments");
 
 
         this.mvc.perform(requestBuilder)
@@ -75,10 +69,9 @@ public class CommentControllerTest {
                 .andExpect(content().json(HelperFile.loadFileJson("responseGet999.json")));
     }
 
-
     @Test
     public void saveTest_Return200 () throws Exception {
-        Comment comment = new Gson().fromJson(HelperFile.loadFileJson("comment.json"), Comment.class);
+        var comment = new Gson().fromJson(HelperFile.loadFileJson("comment.json"), Comment.class);
 
 
         mvc.perform(MockMvcRequestBuilders.post(PATH_APP + "/999/comment")
@@ -87,6 +80,23 @@ public class CommentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    public void updateTest_Return200 () throws Exception {
+        var comment = new Gson().fromJson(HelperFile.loadFileJson("comment.json"), Comment.class);
+
+
+        mvc.perform(MockMvcRequestBuilders.put(PATH_APP + "/999/comments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(comment)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteTest_Return200 () throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders.delete(PATH_APP + "/999/comments"))
+                .andExpect(status().isOk());
+    }
 
 
     private String toJson (Object o) {
