@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-
+    @CrossOrigin
     @GetMapping(value="/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity getComments(@PathVariable("id") String idComment) {
@@ -33,6 +34,7 @@ public class CommentController {
         return new ResponseEntity<>(commentService.findByIdComment(idComment), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping(value = "/{id}/comment", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity save(@RequestBody @Valid Comment comment, @PathVariable("id") String idComment) {
@@ -48,6 +50,7 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PutMapping(value = "/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity update(@RequestBody @Valid Comment comment, @PathVariable("id") String idComment) {
@@ -60,7 +63,8 @@ public class CommentController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
+    @CrossOrigin
     @DeleteMapping (value = "/{id}/comments")
     @ResponseBody
     public ResponseEntity delete(@PathVariable("id") Long id) {
